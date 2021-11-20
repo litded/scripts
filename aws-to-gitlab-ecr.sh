@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Миграция последних тегов docker из aws в gitlab registry (или любой другой)
+# Миграция последних тегов docker из aws ecr в gitlab registry (или любой другой)
 #./aws-to-gitlab-ecr.sh crm/ui ww/crm-ui
 
 awsname=$1
