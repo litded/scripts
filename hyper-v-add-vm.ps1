@@ -22,6 +22,9 @@
 # apt install linux-virtual linux-cloud-tools-virtual linux-tools-virtual
 # update-initramfs -u
 
+# Нашёл способ подхватывать имена машин, проверил только на ubuntu 20.04
+# VMNAME=$(cat /var/lib/hyperv/.kvp_pool_3 | sed -e 's/^.*VirtualMachineName\x0*//g' -e 's/\x0.*//g') && sudo hostname $VMNAME && sudo sed -i "s/localhost/localhost\t$VMNAME/g" /etc/hosts
+
 
 Param (
 [string]$name,
