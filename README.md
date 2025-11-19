@@ -41,7 +41,7 @@ update-initramfs -u
 
 Нашёл способ подхватывать имена машин, проверил только на ubuntu 20.04
 
-VMNAME=$(cat /var/lib/hyperv/.kvp_pool_3 | sed -e 's/^.*VirtualMachineName\x0*//g' -e 's/\x0.*//g') && sudo hostname $VMNAME && sudo sed -iE "s/ localhost.*/ localhost $VMNAME/g" /etc/hosts
+VMNAME=$(sed -n 's/.*VirtualMachineName\x00\(.*\)\x00.*/\1/p' /var/lib/hyperv/.kvp_pool_3) && sudo hostname $VMNAME && sudo sed -iE "s/ localhost.*/ localhost $VMNAME/g" /etc/hosts
 
  chmod 744 /usr/local/bin/vmname.sh
 
