@@ -22,31 +22,44 @@ $cpu - количество ядер
 
 Установите ос, и экспортируйте VM в любую папку, а затем перенесите диск в папку на которую указывает переменная $iso 
 
-В debian 10 и ниже, установите:
+В alpine:
 
+```shell
+apk add hvtools
+
+cp /boot/efi/EFI/alpine/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
+```
+
+В debian установите:
+
+```shell
 apt-get install hyperv-daemons
 
-И скопируйте загрузчик
+#И скопируйте загрузчик
 
-cd /boot/efi/EFI && cp -r debian/ boot && cd boot && mv shimx64.efi bootx64.efi
+cd /boot/efi/EFI && cp -r debian/* boot && cd boot && mv shimx64.efi BOOTX64.efi
+```
 
 В ubuntu 20.04:
 
+```shell
 for i in hv_utils hv_vmbus hv_storvsc hv_blkvsc hv_netvsc; do echo $i >> /etc/initramfs-tools/modules; done
 
 apt install linux-virtual linux-cloud-tools-virtual linux-tools-virtual
 
 update-initramfs -u
-
+```
 
 Нашёл способ подхватывать имена машин, проверил только на ubuntu 20.04
 
+```shell
 VMNAME=$(sed -n 's/.*VirtualMachineName\x00\(.*\)\x00.*/\1/p' /var/lib/hyperv/.kvp_pool_3) && sudo hostname $VMNAME && sudo sed -iE "s/ localhost.*/ localhost $VMNAME/g" /etc/hosts
 
- chmod 744 /usr/local/bin/vmname.sh
+chmod 744 /usr/local/bin/vmname.sh
 
- chmod 664 /etc/systemd/system/vmname.service
+chmod 664 /etc/systemd/system/vmname.service
 
- systemctl daemon-reload
- 
- systemctl enable vmname.service
+systemctl daemon-reload
+
+systemctl enable vmname.service
+```
